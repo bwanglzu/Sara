@@ -14,7 +14,7 @@ def train_test_split(
         represent the proportion of the dataset to include in the
         train split. The rest proportion will be considered as test.
     """
-    indices = np.random.permutation(x.shape[0])
+    indices = np.random.permutation(X.shape[0])
     num_train_samples = int(train_size * len(indices))
     indices_train = indices[: num_train_samples]
     indices_test = indices[num_train_samples:]
