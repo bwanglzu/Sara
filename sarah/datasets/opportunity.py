@@ -48,4 +48,3 @@ def load_data() -> Union[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.nda
     X, y = opportunity[:, :243], opportunity[:, 243:]
     logger.info('Load finished.')
     return train_test_split(X, y)
-
