@@ -16,7 +16,6 @@ import requests
 import numpy as np
 from loguru import logger
 
-from sarah.utils import train_test_split
 
 def load_data() -> Union[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.ndarray]]:
     """Download, extract & Load uci har smartphone dataset.
@@ -28,7 +27,7 @@ def load_data() -> Union[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.nda
     :return: A tuple contains `X_test` and `y_test`.
     """
     uri = 'https://archive.ics.uci.edu/ml/machine-learning-databases/00240/UCI%20HAR%20Dataset.zip'
-    ucihar_dir = Path.cwd().joinpath('UCI ADL Binary Dataset')
+    ucihar_dir = Path.cwd().joinpath('UCI HAR Dataset')
     if not ucihar_dir.exists():
         logger.info('Downloading UCI HAR dataset...')
         response = requests.get(uri)
@@ -38,10 +37,9 @@ def load_data() -> Union[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.nda
         zipfile.extractall()
         logger.info('Unzip finished.')
     logger.info('Loading UCI HAR dataset...')
-    # batches = list(opportunity_dir.glob('**/*.dat'))
-    # opportunity = np.empty(shape=[0, 250])
-    # for batch in batches:
-    #     opportunity = np.concatenate((opportunity,np.loadtxt(batch, dtype=float)))
-    # X, y = opportunity[:, :243], opportunity[:, 243:]
-    # logger.info('Load finished.')
-    # return train_test_split(X, y)
+    X_train = np.loadtxt(str(ucihar_dir) + '/train/X_train.txt')
+    y_train = np.loadtxt(str(ucihar_dir) + '/train/y_train.txt')
+    X_test = np.loadtxt(str(ucihar_dir) + '/test/X_test.txt')
+    y_test = np.loadtxt(str(ucihar_dir) + '/test/y_test.txt')
+    logger.info('Load finished.')
+    return (X_train, y_train), (X_test, y_test)
