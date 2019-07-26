@@ -19,18 +19,18 @@ import numpy as np
 from sarah.utils import train_test_split
 
 def load_data():
-	"""Download , extract & Load opportunity dataset."""
-	uri = 'https://archive.ics.uci.edu/ml/machine-learning-databases' + \
-	'/00226/OpportunityUCIDataset.zip'
-	opportunity_dir = Path.cwd().joinpath('OpportunityUCIDataset')
-	if not opportunity_dir.exists():
-	    response = requests.get(uri)
-	    zipfile = ZipFile(BytesIO(response.content))
-	    zipfile.extractall()
-	batches = list(opportunity_dir.glob('**/*.dat'))
-	opportunity = np.empty(shape=[0, 250])
-	for batch in batches:
-		opportunity = np.concatenate((opportunity,np.loadtxt(batch, dtype=float)))
-	X, y = opportunity[:, :243], opportunity[:, 243:]
-	return train_test_split(X, y)
+    """Download , extract & Load opportunity dataset."""
+    uri = 'https://archive.ics.uci.edu/ml/machine-learning-databases' + \
+    '/00226/OpportunityUCIDataset.zip'
+    opportunity_dir = Path.cwd().joinpath('OpportunityUCIDataset')
+    if not opportunity_dir.exists():
+        response = requests.get(uri)
+        zipfile = ZipFile(BytesIO(response.content))
+        zipfile.extractall()
+    batches = list(opportunity_dir.glob('**/*.dat'))
+    opportunity = np.empty(shape=[0, 250])
+    for batch in batches:
+        opportunity = np.concatenate((opportunity,np.loadtxt(batch, dtype=float)))
+    X, y = opportunity[:, :243], opportunity[:, 243:]
+    return train_test_split(X, y)
 
