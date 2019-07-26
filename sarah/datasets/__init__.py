@@ -1,0 +1,1 @@
+from .opportunity import load_data
