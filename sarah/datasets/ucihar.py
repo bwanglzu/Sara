@@ -37,9 +37,30 @@ def load_data() -> Union[Tuple[np.ndarray, np.ndarray], Tuple[np.ndarray, np.nda
         zipfile.extractall()
         logger.info('Unzip finished.')
     logger.info('Loading UCI HAR dataset...')
-    X_train = np.loadtxt(str(ucihar_dir) + '/train/X_train.txt')
-    y_train = np.loadtxt(str(ucihar_dir) + '/train/y_train.txt')
-    X_test = np.loadtxt(str(ucihar_dir) + '/test/X_test.txt')
-    y_test = np.loadtxt(str(ucihar_dir) + '/test/y_test.txt')
+    tr_files = _get_names_by_group('train')
+    te_files = _get_names_by_group('test')
+    X_tr = _load_data_by_group(tr_files, str(ucihar_dir))
+    y_tr = np.loadtxt(str(ucihar_dir) + '/train/y_train.txt')
+    X_te = _load_data_by_group(te_files, str(ucihar_dir))
+    y_te = np.loadtxt(str(ucihar_dir) + '/test/y_test.txt')
     logger.info('Load finished.')
-    return (X_train, y_train), (X_test, y_test)
+    return (X_tr, y_tr), (X_te, y_te)
+
+def _get_names_by_group(group_name: str) -> list:
+    """Get file names per feature."""
+    names = ['total_acc_x_', 'total_acc_y_', 'total_acc_z_',
+        'body_acc_x_', 'body_acc_y_', 'body_acc_z_',
+        'body_gyro_x_', 'body_gyro_y_', 'body_gyro_z_']
+    return ['/' + group_name + '/Inertial Signals/' + name + group_name + '.txt'
+            for
+            name
+            in
+            names]
+
+def _load_data_by_group(file_names: list, file_dir: str) -> np.ndarray:
+    """Transform data into three dimensional."""
+    matrix = []
+    for file_name in file_names:
+        data = np.loadtxt(file_dir + file_name)
+        matrix.append(data)
+    return np.dstack(matrix)
